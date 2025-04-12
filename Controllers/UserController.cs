@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Dtos;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Linq.Expressions;
 
 namespace Backend.Controllers
 {
@@ -11,7 +12,7 @@ namespace Backend.Controllers
     {
         private readonly UserService _userService;
 
-        public UserController (UserService userService)
+        public UserController(UserService userService)
         {
             _userService = userService;
         }
@@ -67,6 +68,30 @@ namespace Backend.Controllers
             }
 
             return Ok(await _userService.ObtenerUsuarios());
+        }
+
+        [HttpPost]
+        [Route("/api/[Controller]/EstadoApi")]
+        public IActionResult EstadoApi2()
+        {
+            try
+            {
+                ResponseGeneralDto resposeGeneralDto = new()
+                {
+                    Respuesta = 200,
+                    Mensaje = "API EN EJECUCION CORRECTA"
+                };
+                return Ok(resposeGeneralDto);
+            }
+            catch (Exception ex)
+            {
+                ResponseGeneralDto resposeGeneralDto = new()
+                {
+                    Respuesta = 500,
+                    Mensaje = "API CON ERROR DE EJECUCION - " + ex.Message
+                };
+                return BadRequest(resposeGeneralDto);
+            }
         }
     }
 }
