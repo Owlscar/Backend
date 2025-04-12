@@ -68,5 +68,17 @@ namespace Backend.Controllers
 
             return Ok(await _userService.ObtenerUsuarios());
         }
+
+        [HttpPost]
+        [Route("/api/[Controller]/EstadoApi")]
+        public IActionResult EstadoApi2()
+        {
+            ResponseGeneralDto resposeGeneralDto = new()
+            {
+                Respuesta = 200,
+                Mensaje = "API EN EJECUCION CORRECTA"
+            };
+            return Ok(resposeGeneralDto);
+        }
     }
 }
