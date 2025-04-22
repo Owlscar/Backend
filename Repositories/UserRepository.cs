@@ -101,44 +101,44 @@ namespace Backend.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<bool> Login(RequestInicioSesionDto requestInicioSesionDto)
+        public async Task<ResponseUserDto> Login(RequestInicioSesionDto requestInicioSesionDto)
         {
-            //Consulta SQL
-            bool result = false;
-            string SQL = "SELECT * FROM TEST.dbo.[USER] WHERE username = '" + requestInicioSesionDto.NombreUsuario + "' AND password = '" + requestInicioSesionDto.Contrasena + "';";
-            DBContextUtility Connection = new DBContextUtility();
-            Connection.Connect();
-            using (SqlCommand command = new SqlCommand(SQL, Connection.CONN()))
-            {
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        result = true;
-                    }
-                    else
-                    {
-                        result = false;
-                    }
-                }
-            }
-            Connection.Disconnect();
-
-            return result;
-
-            //ResponseUserDto responseUser = new();
-            //User user = await _testContext.Users.FirstOrDefaultAsync(u => u.Username.Equals(requestInicioSesionDto.NombreUsuario) && u.Password.Equals(requestInicioSesionDto.Contrasena));
-
-            //if (user != null)
+            ////Consulta SQL
+            //bool result = false;
+            //string SQL = "SELECT * FROM TEST.dbo.[USER] WHERE username = '" + requestInicioSesionDto.NombreUsuario + "' AND password = '" + requestInicioSesionDto.Contrasena + "';";
+            //DBContextUtility Connection = new DBContextUtility();
+            //Connection.Connect();
+            //using (SqlCommand command = new SqlCommand(SQL, Connection.CONN()))
             //{
-            //    responseUser.Id_User = user.IdUser;
-            //    responseUser.Id_Role = (int)user.IdRole;
-            //    responseUser.Id_State = (int)user.IdState;
-            //    responseUser.Username = user.Username;
-            //    responseUser.Name = user.Name;
+            //    using (SqlDataReader reader = command.ExecuteReader())
+            //    {
+            //        if (reader.Read())
+            //        {
+            //            result = true;
+            //        }
+            //        else
+            //        {
+            //            result = false;
+            //        }
+            //    }
             //}
+            //Connection.Disconnect();
 
-            //return responseUser;
+            //return result;
+
+            ResponseUserDto responseUser = new();
+            User user = await _testContext.Users.FirstOrDefaultAsync(u => u.Username.Equals(requestInicioSesionDto.NombreUsuario) && u.Password.Equals(requestInicioSesionDto.Contrasena));
+
+            if (user != null)
+            {
+                responseUser.Id_User = user.IdUser;
+                responseUser.Id_Role = (int)user.IdRole;
+                responseUser.Id_State = (int)user.IdState;
+                responseUser.Username = user.Username;
+                responseUser.Name = user.Name;
+            }
+
+            return responseUser;
         }
     }
 }
