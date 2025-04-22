@@ -39,7 +39,20 @@ namespace Backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(await _userService.InicioSesion(requestInicioSesionDto));
+            try
+            {
+                return Ok(await _userService.InicioSesion(requestInicioSesionDto));
+            }
+            catch(Exception ex)
+            {
+                ResponseGeneralDto resposeGeneralDto = new()
+                {
+                    Respuesta = 500,
+                    Mensaje = "API CON ERROR DE EJECUCION - " + ex.InnerException
+                };
+                return BadRequest(resposeGeneralDto);
+            }
+
         }
 
         [HttpPost]
